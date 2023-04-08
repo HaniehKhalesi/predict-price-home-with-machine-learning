@@ -34,49 +34,37 @@ for i in range(len(feature_homes)):
     price = prices[i]
     address = address_s[i]
     
+    # extract city or region in address text
     address_s__  = address.text
     address_s_l = address_s__.split(',')[-2]
     address_li.append(address_s_l)
     
+    # convert price string format to similar int
     price = price.text
     price_ =  re.sub('\$', '', str(price))
     price_ =  re.sub(',', '.', str(price_))
     price_li.append(price_)
     
+    # extract number bads, number baths, area from feature_homes 
     beds_item = item.findAll('div', attrs={'class':'stats'})[0].string
     baths_items = item.findAll('div', attrs={'class':'stats'})[1].string
     area_Sq_item = item.findAll('div', attrs={'class':'stats'})[2].string
     
+    # convert price string format to similar int
     beds_item = re.sub(' Beds', '', beds_item)
     beds_item = re.sub(' Bed', '', beds_item)
     
+    # convert price string format to similar int
     baths_items = re.sub(' Baths', '', baths_items)
     baths_items = re.sub(' Bath', '', baths_items)
     
+    # convert price string format to similar int
     area_Sq_item = re.sub(' Sq. Ft.', '', str(area_Sq_item))
     area_Sq_item = re.sub(',', '.', str(area_Sq_item))
 
     baths.append(baths_items)
     beds.append(beds_item)
     area_Sq.append(area_Sq_item)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
