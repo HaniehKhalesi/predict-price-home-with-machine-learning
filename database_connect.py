@@ -30,5 +30,3 @@ curser.execute(sql)
 # connection.commit()
 # connection.close()
 
-
-    
