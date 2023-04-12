@@ -60,6 +60,6 @@ for page_number in range(1,10):
         area_Sq_item = re.sub(' Sq. Ft.', '', str(area_Sq_item))
         area_Sq_item = re.sub(',', '.', str(area_Sq_item))
 
-        # insert_data(area=area_Sq_item, number_bedrooms=beds_item, number_bath=baths_items, property_address=address_s_l, price=price_)
+        insert_data(area=area_Sq_item, number_bedrooms=beds_item, number_bath=baths_items, property_address=address_s_l, price=price_)
 
 

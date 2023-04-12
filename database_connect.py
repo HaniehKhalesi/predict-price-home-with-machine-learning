@@ -6,7 +6,7 @@ import sqlite3
 def insert_data(number_bedrooms, number_bath, area, property_address, price):
     connection = sqlite3.connect('./feature_home.db')
     curser = connection.cursor()
-    curser.execute("INSERT INTO feature_home VALUE (?,?,?,?,?)", (number_bedrooms, number_bath, area, property_address, price))
+    curser.execute("INSERT INTO feature_home VALUES (?,?,?,?,?)", (number_bedrooms, number_bath, area, property_address, price))
     connection.commit()
     connection.close()
 
