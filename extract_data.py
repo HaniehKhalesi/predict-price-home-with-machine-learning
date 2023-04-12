@@ -48,15 +48,15 @@ for page_number in range(1,10):
         baths_items = item.findAll('div', attrs={'class':'stats'})[1].string
         area_Sq_item = item.findAll('div', attrs={'class':'stats'})[2].string
         
-        # convert price string format to similar int
+        # convert beds_item string format to similar int
         beds_item = re.sub(' Beds', '', str(beds_item))
         beds_item = re.sub(' Bed', '', beds_item)
         
-        # convert price string format to similar int
+        # convert baths_items string format to similar int
         baths_items = re.sub(' Baths', '', str(baths_items))
         baths_items = re.sub(' Bath', '', baths_items)
         
-        # convert price string format to similar int
+        # convert area_Sq_item string format to similar int
         area_Sq_item = re.sub(' Sq. Ft.', '', str(area_Sq_item))
         area_Sq_item = re.sub(',', '.', str(area_Sq_item))
 
