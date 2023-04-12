@@ -20,21 +20,13 @@ def select_all_records(cursor):
         print(row)
         
 
-def export_database_to_csv_file(file_name, data):       
-    try:
-        with open(file_name, 'w', newline='')as f:
-            writer = csv.writer(f)
-            writer.writerow([
-                'Number_bedrooms',
-                'number_bath',
-                'area',
-                'property_address',
-                'price'
-            ])
-            writer.writerow(data)
-            print("export database to csv file successful ...")
-    except:
-        print("can not export database to csv file ...")
+def export_database_to_csv_file(cursor):
+  cursor.execute("select * from feature_home")
+  with open("data.csv", "w") as csv_file:
+    csv_writer = csv.writer(csv_file, delimiter="\t")
+    csv_writer.writerow([i[0] for i in cursor.description])
+    csv_writer.writerows(cursor)
+
     
         
 connection = sqlite3.connect('./feature_home.db')
@@ -57,8 +49,8 @@ curser.execute(sql)
 # connection.close()
 
 # show all data in table feature home
-select_all_records(curser)
+# select_all_records(curser)
+
 
 # export all data table feature home to 
-data = curser.execute("SELECT * FROM feature_home")
-export_database_to_csv_file('output_data_feature_home.csv', data)
+export_database_to_csv_file(curser)
