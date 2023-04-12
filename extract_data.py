@@ -4,67 +4,60 @@ from bs4 import BeautifulSoup
 from urllib.request import Request, urlopen
 from urllib.request import Request
 import re
-
-# connect to website redfin and read html file
-url_test = 'https://www.redfin.com/city/29470/IL/Chicago'
-site = url_test
-hdr = {'User-Agent': 'Mozilla/5.0'}
-req = Request(site, headers=hdr)
-page = urlopen(req)
-soup = BeautifulSoup(page)
+from database_connect import insert_data
 
 
-# extract data for feature home (number bads, number baths, area)
-feature_homes = soup.findAll('div', attrs={'class':'HomeStatsV2 font-size-small'})
-# extract data for prices
-prices = soup.findAll('span', attrs={'class':"homecardV2Price"})
-# extract data for address
-address_s = soup.findAll('div',attrs={'class':'homeAddressV2'})
 
-beds = []    
-baths = []    
-area_Sq = []
-price_li = []
-address_li = []
+for page_number in range(3):
 
+    # connect to website redfin and read html file
+    url_test = f'https://www.redfin.com/city/29470/IL/Chicago/page-{page_number}'
+    site = url_test
+    hdr = {'User-Agent': 'Mozilla/5.0'}
+    req = Request(site, headers=hdr)
+    page = urlopen(req)
+    soup = BeautifulSoup(page)
 
-for i in range(len(feature_homes)):
+    # extract data for feature home (number bads, number baths, area)
+    feature_homes = soup.findAll('div', attrs={'class':'HomeStatsV2 font-size-small'})
+    # extract data for prices
+    prices = soup.findAll('span', attrs={'class':"homecardV2Price"})
+    # extract data for address
+    address_s = soup.findAll('div',attrs={'class':'homeAddressV2'})
     
-    item = feature_homes[i]
-    price = prices[i]
-    address = address_s[i]
     
-    # extract city or region in address text
-    address_s__  = address.text
-    address_s_l = address_s__.split(',')[-2]
-    address_li.append(address_s_l)
-    
-    # convert price string format to similar int
-    price = price.text
-    price_ =  re.sub('\$', '', str(price))
-    price_ =  re.sub(',', '.', str(price_))
-    price_li.append(price_)
-    
-    # extract number bads, number baths, area from feature_homes 
-    beds_item = item.findAll('div', attrs={'class':'stats'})[0].string
-    baths_items = item.findAll('div', attrs={'class':'stats'})[1].string
-    area_Sq_item = item.findAll('div', attrs={'class':'stats'})[2].string
-    
-    # convert price string format to similar int
-    beds_item = re.sub(' Beds', '', beds_item)
-    beds_item = re.sub(' Bed', '', beds_item)
-    
-    # convert price string format to similar int
-    baths_items = re.sub(' Baths', '', baths_items)
-    baths_items = re.sub(' Bath', '', baths_items)
-    
-    # convert price string format to similar int
-    area_Sq_item = re.sub(' Sq. Ft.', '', str(area_Sq_item))
-    area_Sq_item = re.sub(',', '.', str(area_Sq_item))
+    for item in range(len(feature_homes)):
+        
+        item = feature_homes[item]
+        price = prices[item]
+        address = address_s[item]
+        
+        # extract city or region in address text
+        address_s__  = address.text
+        address_s_l = address_s__.split(',')[-2]
+        
+        # convert price string format to similar int
+        price = price.text
+        price_ =  re.sub('\$', '', str(price))
+        price_ =  re.sub(',', '.', str(price_))
+        
+        # extract number bads, number baths, area from feature_homes 
+        beds_item = item.findAll('div', attrs={'class':'stats'})[0].string
+        baths_items = item.findAll('div', attrs={'class':'stats'})[1].string
+        area_Sq_item = item.findAll('div', attrs={'class':'stats'})[2].string
+        
+        # convert price string format to similar int
+        beds_item = re.sub(' Beds', '', beds_item)
+        beds_item = re.sub(' Bed', '', beds_item)
+        
+        # convert price string format to similar int
+        baths_items = re.sub(' Baths', '', baths_items)
+        baths_items = re.sub(' Bath', '', baths_items)
+        
+        # convert price string format to similar int
+        area_Sq_item = re.sub(' Sq. Ft.', '', str(area_Sq_item))
+        area_Sq_item = re.sub(',', '.', str(area_Sq_item))
 
-    baths.append(baths_items)
-    beds.append(beds_item)
-    area_Sq.append(area_Sq_item)
-
+        insert_data(area=area_Sq_item, number_bedrooms=beds_item, number_bath=baths_items, property_address=address_s_l, price=price_)
 
 
