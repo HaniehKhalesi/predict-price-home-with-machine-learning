@@ -3,10 +3,10 @@
 import sqlite3
 
 
-def insert_data(number_badrom, number_bath, area, property_address, price):
+def insert_data(number_bedrooms, number_bath, area, property_address, price):
     connection = sqlite3.connect('./feature_home.db')
     curser = connection.cursor()
-    curser.execute("INSERT INTO feature_home VALUE (?,?,?,?,?)", (number_badrom, number_bath, area, property_address, price))
+    curser.execute("INSERT INTO feature_home VALUE (?,?,?,?,?)", (number_bedrooms, number_bath, area, property_address, price))
     connection.commit()
     connection.close()
 
@@ -18,11 +18,11 @@ print('DB Init')
 #   CREATE TABLE
 sql = """
     CREATE TABLE IF NOT EXISTS feature_home(
-        number_badrom INTEGER ,
-        number_bath (60),
-        area VARCHAR (60),
-        property_address INTEGER 
-        price INTEGER
+        Number_bedrooms INTEGER ,
+        number_bath INTEGER,
+        area VARCHAR (15),
+        property_address VARCHAR (100), 
+        price VARCHAR (60)
     );
     """
 curser.execute(sql)
