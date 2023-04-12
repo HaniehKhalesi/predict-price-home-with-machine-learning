@@ -8,10 +8,12 @@ from database_connect import insert_data
 
 
 
-for page_number in range(3):
+for page_number in range(1,10):
 
     # connect to website redfin and read html file
     url_test = f'https://www.redfin.com/city/29470/IL/Chicago/page-{page_number}'
+    # url_test = f'https://www.redfin.com/city/29470/IL/Chicago/page-'
+
     site = url_test
     hdr = {'User-Agent': 'Mozilla/5.0'}
     req = Request(site, headers=hdr)
@@ -24,13 +26,13 @@ for page_number in range(3):
     prices = soup.findAll('span', attrs={'class':"homecardV2Price"})
     # extract data for address
     address_s = soup.findAll('div',attrs={'class':'homeAddressV2'})
-    
-    
-    for item in range(len(feature_homes)):
         
-        item = feature_homes[item]
-        price = prices[item]
-        address = address_s[item]
+        
+    for count in range(len(feature_homes)):
+            
+        item = feature_homes[count]
+        price = prices[count]
+        address = address_s[count]
         
         # extract city or region in address text
         address_s__  = address.text
@@ -47,17 +49,17 @@ for page_number in range(3):
         area_Sq_item = item.findAll('div', attrs={'class':'stats'})[2].string
         
         # convert price string format to similar int
-        beds_item = re.sub(' Beds', '', beds_item)
+        beds_item = re.sub(' Beds', '', str(beds_item))
         beds_item = re.sub(' Bed', '', beds_item)
         
         # convert price string format to similar int
-        baths_items = re.sub(' Baths', '', baths_items)
+        baths_items = re.sub(' Baths', '', str(baths_items))
         baths_items = re.sub(' Bath', '', baths_items)
         
         # convert price string format to similar int
         area_Sq_item = re.sub(' Sq. Ft.', '', str(area_Sq_item))
         area_Sq_item = re.sub(',', '.', str(area_Sq_item))
 
-        insert_data(area=area_Sq_item, number_bedrooms=beds_item, number_bath=baths_items, property_address=address_s_l, price=price_)
+        # insert_data(area=area_Sq_item, number_bedrooms=beds_item, number_bath=baths_items, property_address=address_s_l, price=price_)
 
 
