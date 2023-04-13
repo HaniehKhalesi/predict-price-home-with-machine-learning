@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from urllib.request import Request, urlopen
 from urllib.request import Request
 import re
-from database_connect import insert_data
+from database_connect import insert_data, export_database_to_csv_file
 
 
 
@@ -41,7 +41,7 @@ for page_number in range(1,10):
         # convert price string format to similar int
         price = price.text
         price_ =  re.sub('\$', '', str(price))
-        price_ =  re.sub(',', '.', str(price_))
+        price_ =  re.sub(',', '', str(price_))
         
         # extract number bads, number baths, area from feature_homes 
         beds_item = item.findAll('div', attrs={'class':'stats'})[0].string
@@ -63,3 +63,5 @@ for page_number in range(1,10):
         insert_data(area=area_Sq_item, number_bedrooms=beds_item, number_bath=baths_items, property_address=address_s_l, price=price_)
 
 
+
+# export all data table feature home to 
